@@ -10,7 +10,7 @@ Here's a detailed response to each of your queries related to Jenkins:
   ```bash
   curl -Lv http://localhost:8085/login 2>&1 | grep -i 'x-ssh-endpoint'
   ```
- No Output
+No Output
 
  
 ### Jenkins Plugins
@@ -24,6 +24,8 @@ Here's a detailed response to each of your queries related to Jenkins:
   1. **Manage Jenkins** -> **Manage Plugins**.
   2. Search for "Git Plugin" and "GitHub Plugin" in the **Available** tab and install them.
 
+Done installed 
+
 ### Jenkins Installation
 - **Normal Service Installation:**
   - Follow the official Jenkins installation guide for your operating system (e.g., using apt for Debian-based systems, yum for RedHat-based systems).
@@ -32,7 +34,7 @@ Here's a detailed response to each of your queries related to Jenkins:
   ```bash
   docker run -d -p 8080:8080 -p 50000:50000 --name jenkins jenkins/jenkins:lts
   ```
-
+  
 - **Ansible Installation:**
   - Install Jenkins using an Ansible playbook:
     ```yaml
@@ -53,6 +55,8 @@ Here's a detailed response to each of your queries related to Jenkins:
             state: started
             enabled: yes
     ```
+  ![Screenshot from 2024-09-18 16-56-18](https://github.com/user-attachments/assets/d75322ae-4712-4085-bc6a-35fea0d639a0)
+
 
 ### Jenkins Data Location
 - Jenkins primarily stores its data in `/var/lib/jenkins`.
@@ -61,8 +65,12 @@ Here's a detailed response to each of your queries related to Jenkins:
 - **Install ThinBackup Plugin:**
   - **Manage Jenkins** -> **Manage Plugins** -> **Available** tab -> Search for "ThinBackup" and install it.
 
+DONE
+
 - **Configure ThinBackup:**
   - Go to **Manage Jenkins** -> **ThinBackup** -> Configure the backup directory as `/var/lib/jenkins/jenkins_backup`.
+ 
+![Screenshot from 2024-09-18 17-15-15](https://github.com/user-attachments/assets/5d1850f4-9368-4e7d-88b6-e8b219a86677)
 
 ### Creating Jenkins User
 - **Create Jenkins User:**
