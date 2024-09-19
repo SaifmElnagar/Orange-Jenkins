@@ -1,5 +1,7 @@
 # Orange-Jenkins
 
+# Lab-1
+
 Here's a detailed response to each of your queries related to Jenkins:
 
 ### Prerequisite Package for Installing Jenkins
@@ -55,7 +57,7 @@ Done installed
             state: started
             enabled: yes
     ```
-  ![Screenshot from 2024-09-18 16-56-18](https://github.com/user-attachments/assets/d75322ae-4712-4085-bc6a-35fea0d639a0)
+![Screenshot from 2024-09-18 16-56-18](https://github.com/user-attachments/assets/d75322ae-4712-4085-bc6a-35fea0d639a0)
 
 
 ### Jenkins Data Location
