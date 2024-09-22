@@ -74,12 +74,16 @@ DONE
  
 ![Screenshot from 2024-09-18 17-15-15](https://github.com/user-attachments/assets/5d1850f4-9368-4e7d-88b6-e8b219a86677)
 
+
 ### Creating Jenkins User
 - **Create Jenkins User:**
   - **Manage Jenkins** -> **Manage Users** -> **Create User**.
   - Username: `jenkins`
   - Password: `jenk!n$`
   - Full Name: `Orange DevOps`
+
+![Create-User](https://github.com/user-attachments/assets/dcb561c9-6f06-4e24-968a-0a1c4c915d37)
+
 
 ### Installing Role-Based Authorization Strategy Plugin
 - **Install Plugin:**
@@ -96,6 +100,10 @@ DONE
 - **Assign Role to User `jenkins`**:
   - Go to **Manage Jenkins** -> **Manage and Assign Roles** -> **Assign Roles**.
   - Assign the `developers` role to the user `jenkins`.
+ 
+![rolebased](https://github.com/user-attachments/assets/c27ac60f-62bb-49c6-a742-066c4bb3eb82)
+![Developers-role](https://github.com/user-attachments/assets/a149f8d8-1a52-4802-98a2-176b9fb6cf0f)
+
 
 ### Installing Matrix Authorization Strategy Plugin
 - **Install Plugin:**
@@ -126,6 +134,8 @@ DONE
         }
     }
     ```
+![hello-word-pipline](https://github.com/user-attachments/assets/95af3a45-834a-44b1-b962-79f1b6b96477)
+
 
 ### Installing SSH Build Agents Plugin
 - **Install Plugin:**
@@ -137,18 +147,29 @@ DONE
     ```bash
     echo "Hello, World!"
     ```
+![hello-world2](https://github.com/user-attachments/assets/8c054cd9-7b80-4c59-9228-5da7423af7c2)
+
 
 ### Configuring Job to Pull from GitHub
 - **Configure GitHub Repository:**
   - **Source Code Management** -> **Git** -> Enter the repository URL.
+    
+![git-repo](https://github.com/user-attachments/assets/4ec44aee-5d6b-46f4-be3a-f97b6eb470fe)
+
 
 ### Triggering Job Every 5 Minutes
 - **Configure Build Periodically:**
   - **Build Triggers** -> **Build periodically** -> Add cron syntax `*/5 * * * *`.
 
+![build5](https://github.com/user-attachments/assets/8e3481fd-ceb9-4fdc-8b18-c95a958556bf)
+
+
 ### Installing Jenkins Plugin from Plugin Manager
 - **Install Plugin (e.g., Docker Plugin):**
   - **Manage Jenkins** -> **Manage Plugins** -> **Available** tab -> Search for "Docker" and install it.
+ 
+![Docker](https://github.com/user-attachments/assets/eed7c456-ef23-48da-83f8-51196db9b2e5)
+
 
 ### Email Notifications on Build Failure
 - **Configure Email Notifications:**
