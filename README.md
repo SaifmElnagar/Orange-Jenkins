@@ -237,4 +237,209 @@ DONE
   - **Manage Jenkins** -> **Manage Nodes and Clouds** -> Add a node with label `linux`.
   - Configure the job to run on nodes with the label `linux`.
 
-If you have any specific questions or need further details on any of these tasks, let me know!
+
+Here are the steps and configurations to achieve each of the Jenkins tasks you requested:
+
+---
+
+# Lab-1
+
+---
+
+### 1. **Freestyle Job: Pull Code from GitHub and Build with Maven**
+   
+1. **Create a Freestyle Job:**
+   - Go to Jenkins Dashboard > New Item > Freestyle project.
+   - Enter a name for the job and select "Freestyle project."
+
+2. **Configure Source Code Management:**
+   - Under "Source Code Management," select **Git**.
+   - Enter the **GitHub repository URL** (choose a public repository from GitHub).
+   - Set credentials if required for private repositories.
+
+3. **Build Trigger:**
+   - Under "Build Triggers," select **GitHub hook trigger for GITScm polling**.
+   - Make sure to set up a webhook in your GitHub repository to point to your Jenkins server. (GitHub Repository > Settings > Webhooks > Add webhook > set Jenkins URL + `/github-webhook/`).
+
+4. **Build Step:**
+   - Under "Build," add **Invoke top-level Maven targets**.
+   - Provide the **Maven goals** (e.g., `clean install`).
+
+5. **Save** the job, and Jenkins will now trigger builds when code changes are pushed to the GitHub repository.
+
+---
+
+### 2. **Pipeline Job: Checkout, Build, and Test with Git**
+
+1. **Create a Pipeline Job:**
+   - Go to Jenkins Dashboard > New Item > Pipeline.
+   - Name your pipeline and click "OK."
+
+2. **Pipeline Script:**
+   Use the following declarative pipeline in the pipeline script section:
+
+   ```groovy
+   pipeline {
+       agent any
+       
+       stages {
+           stage('Checkout') {
+               steps {
+                   git branch: 'main', url: 'https://github.com/your-repo.git'
+               }
+           }
+
+           stage('Build') {
+               steps {
+                   sh 'mvn clean install'
+               }
+           }
+
+           stage('Test') {
+               steps {
+                   sh 'mvn test'
+               }
+           }
+       }
+
+       post {
+           always {
+               junit '**/target/surefire-reports/*.xml'
+           }
+       }
+   }
+   ```
+
+3. **Save** and run the job. This pipeline checks out code, builds using Maven, and runs unit tests.
+
+---
+
+### 3. **Freestyle Job: Trigger Build on Push to Main Branch (Git Plugin + Webhook)**
+
+1. **Create Freestyle Job:**
+   - Create a new Freestyle project and configure it to use **Git** under "Source Code Management."
+   - Set the repository URL and credentials if needed.
+   - Under "Branches to build," specify `*/main` to build only the `main` branch.
+
+2. **Build Triggers:**
+   - Check the box for **GitHub hook trigger for GITScm polling**.
+
+3. **Set up Webhook in GitHub:**
+   - In the GitHub repository settings, under Webhooks, add a new webhook with the payload URL as `http://<Jenkins_URL>/github-webhook/`.
+   - This will trigger Jenkins builds when code is pushed to the `main` branch.
+
+4. **Save** and run your job.
+
+---
+
+### 4. **Freestyle Job: Build Docker Image and Push to Docker Hub**
+
+1. **Create Freestyle Job:**
+   - In Jenkins, create a new Freestyle project.
+
+2. **Add Jenkins Credentials for Docker Hub:**
+   - Go to Jenkins Dashboard > Credentials > System > Global credentials (unrestricted) > Add Credentials.
+   - Add your Docker Hub credentials (username and password).
+
+3. **Configure the Job:**
+   - In the build section, add an **Execute Shell** step with the following commands to build and push your Docker image:
+
+     ```bash
+     docker build -t your-dockerhub-username/repo-name .
+     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+     docker push your-dockerhub-username/repo-name
+     ```
+
+4. **Use Credentials in the Build:**
+   - Under "Build Environment," select **Use secret text(s)** or **file(s)** and select the Docker Hub credentials you added.
+
+5. **Save** the job. The Docker image will now be built and pushed to Docker Hub during each build.
+
+---
+
+### 5. **Pipeline Job: Slack Notifications for Build Success or Failure**
+
+1. **Install Slack Plugin:**
+   - Go to Jenkins Dashboard > Manage Jenkins > Manage Plugins > Available.
+   - Search for and install the **Slack Notification Plugin**.
+
+2. **Configure Slack Integration:**
+   - In Jenkins Dashboard > Manage Jenkins > Configure System.
+   - Scroll down to the **Slack** section and provide your Slack workspace and credentials.
+   - Set the default channel for notifications.
+
+3. **Create a Pipeline Job:**
+   - Create a new pipeline job and add the following script:
+
+     ```groovy
+     pipeline {
+         agent any
+
+         stages {
+             stage('Build') {
+                 steps {
+                     echo 'Building...'
+                     // Replace with actual build steps
+                 }
+             }
+         }
+
+         post {
+             success {
+                 slackSend(channel: '#build-channel', message: "Build succeeded!")
+             }
+             failure {
+                 slackSend(channel: '#build-channel', message: "Build failed!")
+             }
+         }
+     }
+     ```
+
+4. **Save** and run the job. The Slack channel will receive a notification for each build success or failure.
+
+---
+
+### 6. **Pipeline Job: Build and Deploy to Kubernetes Cluster**
+
+1. **Install Kubernetes CLI Plugin (optional):**
+   - Go to Jenkins Dashboard > Manage Jenkins > Manage Plugins > Available.
+   - Search for and install **Kubernetes CLI Plugin**.
+
+2. **Create a Pipeline Job:**
+   - Create a new pipeline job and add the following script:
+
+     ```groovy
+     pipeline {
+         agent any
+
+         environment {
+             KUBECONFIG = credentials('kubeconfig-id') // Jenkins credential ID for kubeconfig
+         }
+
+         stages {
+             stage('Checkout') {
+                 steps {
+                     git branch: 'main', url: 'https://github.com/your-repo.git'
+                 }
+             }
+
+             stage('Build Docker Image') {
+                 steps {
+                     sh 'docker build -t your-dockerhub-username/repo-name .'
+                     sh 'docker push your-dockerhub-username/repo-name'
+                 }
+             }
+
+             stage('Deploy to Kubernetes') {
+                 steps {
+                     sh 'kubectl apply -f deployment.yaml'
+                 }
+             }
+         }
+     }
+     ```
+
+3. **Save** and run the job. The pipeline will pull code from the Git repository, build a Docker image, push it to Docker Hub, and deploy the application to your Kubernetes cluster.
+
+---
+
