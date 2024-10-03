@@ -242,7 +242,7 @@ Here are the steps and configurations to achieve each of the Jenkins tasks you r
 
 ---
 
-# Lab-1
+# Lab-2
 
 ---
 
